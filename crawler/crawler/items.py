@@ -11,7 +11,9 @@ class CrawlerItem(Item):
     pass
 
 class PodcastItem(Item):
+    id_podcast = Field()
     name = Field()
-    published = Field()
+    domain = Field()
     url = Field()
+    published = Field()
     player = Field()
