@@ -12,10 +12,6 @@ con = None
 
 try:
     con = db.connect('podcasts.db')
-
-
-
-
     cur = con.execute('SELECT SQLITE_VERSION()')
 
     data = cur.fetchone()

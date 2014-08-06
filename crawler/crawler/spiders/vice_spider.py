@@ -6,20 +6,20 @@ import hashlib
 
 class ViceSpider(CrawlSpider):
 
+    name = 'vice'
+    allowed_domains = ['thump.vice.com']
+    rules = [Rule(SgmlLinkExtractor(allow=['/mixes/mixed']), 'parse_podcast')]
+
     def get_hash(self, value):
         h = hashlib.new('ripemd160')
         h.update(value)
         return h.hexdigest()
 
     def start_requests(self):
-        for i in range(12):
+        for i in range(20):
             yield self.make_requests_from_url("http://thump.vice.com/mixes/page/%d" % i)
 
-    name = 'vice'
-    allowed_domains = ['thump.vice.com']
-    rules = [Rule(SgmlLinkExtractor(allow=['/mixes/mixed']), 'parse_torrent')]
-
-    def parse_torrent(self, response):
+    def parse_podcast(self, response):
         sel = Selector(response)
         podcast = PodcastItem()
 
@@ -30,3 +30,4 @@ class ViceSpider(CrawlSpider):
         podcast['published'] = sel.xpath("//div[@class='story_meta']").re('\w{3} \d+ \d{4}')
         podcast['player'] = sel.xpath("//iframe").extract()[1]
         return podcast
+
